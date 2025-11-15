@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>速度単位変換 - 広末 (H)</title>
+    <style>
+        /* シンプルなCSSでレイアウトを整えます */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #007bff;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .converter-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .result {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #28a745;
+            margin-top: 10px;
+            text-align: right;
+        }
+        .note {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+            padding-top: 10px;
+            border-top: 1px dashed #eee;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🚀 速度単位相互変換</h1>
+        <p class="note">基準: **1 広末 (H) = 185 km/h**</p>
+
+        <div class="converter-section">
+            <label for="kphInput">km/h を 広末 (H) へ変換:</label>
+            <input type="number" id="kphInput" placeholder="km/hの値を入力" oninput="convertKPH()">
+            <div class="result" id="hirosueResult">0 広末 (H)</div>
+        </div>
+
+        <div class="converter-section">
+            <label for="hirosueInput">広末 (H) を km/h へ変換:</label>
+            <input type="number" id="hirosueInput" placeholder="広末 (H)の値を入力" oninput="convertHirosue()">
+            <div class="result" id="kphResult">0 km/h</div>
+        </div>
+
+        <div class="note">
+            変換は JavaScript を使用してリアルタイムで行われます。
+        </div>
+    </div>
+
+    <script>
+        // 変換係数を定義
+        const KPH_PER_HIROSUE = 185; // 1広末あたり 185 km/h
+
+        /**
+         * km/h から 広末 (H) へ変換する関数
+         */
+        function convertKPH() {
+            const kphInput = document.getElementById('kphInput');
+            const hirosueResult = document.getElementById('hirosueResult');
+
+            // 入力値を取得し、数値に変換
+            const kph = parseFloat(kphInput.value);
+
+            let hirosue;
+            let resultText;
+
+            if (isNaN(kph) || kph === 0) {
+                // 入力がないか、数値でない場合は0を表示
+                hirosue = 0;
+            } else {
+                // 変換計算: 広末 = km/h / 185
+                hirosue = kph / KPH_PER_HIROSUE;
+            }
+
+            // 結果を小数点以下3桁に丸めて表示
+            resultText = `${hirosue.toFixed(3)} 広末 (H)`;
+            hirosueResult.textContent = resultText;
+            
+            // 変換の連鎖を防ぐため、もう一方の入力をクリア
+            document.getElementById('hirosueInput').value = '';
+            document.getElementById('kphResult').textContent = '0 km/h';
+        }
+
+        /**
+         * 広末 (H) から km/h へ変換する関数
+         */
+        function convertHirosue() {
+            const hirosueInput = document.getElementById('hirosueInput');
+            const kphResult = document.getElementById('kphResult');
+
+            // 入力値を取得し、数値に変換
+            const hirosue = parseFloat(hirosueInput.value);
+
+            let kph;
+            let resultText;
+
+            if (isNaN(hirosue) || hirosue === 0) {
+                // 入力がないか、数値でない場合は0を表示
+                kph = 0;
+            } else {
+                // 変換計算: km/h = 広末 * 185
+                kph = hirosue * KPH_PER_HIROSUE;
+            }
+
+            // 結果を小数点以下3桁に丸めて表示
+            resultText = `${kph.toFixed(3)} km/h`;
+            kphResult.textContent = resultText;
+            
+            // 変換の連鎖を防ぐため、もう一方の入力をクリア
+            document.getElementById('kphInput').value = '';
+            document.getElementById('hirosueResult').textContent = '0 広末 (H)';
+        }
+
+        // 初期表示をクリア
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('kphInput').value = '';
+            document.getElementById('hirosueInput').value = '';
+        });
+    </script>
+</body>
+</html>
